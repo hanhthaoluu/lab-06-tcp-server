@@ -17,7 +17,7 @@ function Client(socket) {
 
 server.on('connection', (socket) => {
 
-  const user = new Client(socket)
+  const user = new Client(socket);
 
   //client.username = `User ${Math.random()}`;
   //add the client to the clientpool
@@ -67,37 +67,43 @@ server.on('connection', (socket) => {
       console.log("recipient length = " + recipient.length + " recipient " + recipient[0].nickname);
       //recipient => {
         //console.log(`hi from recipient.socket.write!!!!!!!`);
-      recipient[0].socket.write(finalMessage);
+      recipient[0].socket.write(`${user.nickname}: ${finalMessage}`);
       //}
+    }
+
+    else if(text.startsWith("@list")) {
+
+      let list = [];
+      // Client.prototype.toString = function clientToString() {
+      //   clientPool.map((client) => {list.push(client.nickname)});
+      // }
+      console.log(`the list is: `, list);
+      clientPool.forEach(client => user.socket.write(`${client.nickname} `));
     }
 
     else if(text.startsWith("@quit")) {
       //delete your client/socket from the clientpool
-      console.log(``);
-      let currentIndex = clientPool.indexOf(socket);
-      let deletedSocket = clientPool.splice(currentIndex, 1);
+      socket.end();
 
-      console.log(`deletedSocket is :${JSON.stringify(deletedSocket)}`);
       clientPool.forEach(function(connection) {
         connection.socket.write(`${user.nickname} left the chatroom.`);
       })
-
-      /////deletedSocket is an instance of the constructor Client...socket is the property of deletedSocket
-      deletedSocket.socket.end();
     }
 
     else {
       clientPool.forEach(function(connection) {
-        connection.socket.write(text);
+        connection.socket.write(`${user.nickname}: ${text}`);
       });
     }
 
+  });
+  socket.on('error', (error) => console.log(error));
+  socket.on('close', () => {
+    let currentIndex = clientPool.indexOf(socket);
+    let deletedSocket = clientPool.splice(currentIndex, 1);
   });
 });
 
 server.listen(port, () => {
   console.log('server is up ', port);
 });
-//client.on('error');
-//client.on('close');
-//client.on('disconnect');

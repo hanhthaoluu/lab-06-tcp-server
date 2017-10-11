@@ -4,7 +4,7 @@
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server ======",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/hanhthaoluu/lab-06-tcp-server/issues"
   },
-  "homepage": "https://github.com/hanhthaoluu/lab-06-tcp-server#readme"
+  "homepage": "https://github.com/hanhthaoluu/lab-06-tcp-server#readme",
+  "devDependencies": {
+    "expect": "^21.2.1",
+    "mocha": "^4.0.1"
+  }
 }
