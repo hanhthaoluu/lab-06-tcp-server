@@ -86,7 +86,9 @@ server.on('connection', (socket) => {
       socket.end();
 
       clientPool.forEach(function(connection) {
+        if(connection.socket !== user.socket) {
         connection.socket.write(`${user.nickname} left the chatroom.`);
+        }
       })
     }
 
